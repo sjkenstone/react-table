@@ -11,9 +11,8 @@ function App() {
   const [error, setError] = useState(null)
   const [products, setProducts] = useState([])
   const [query, setQuery] = useState('')
-  const search_params = ['title', 'price']
+  // const search_params = ['title', 'price']
   const [addNewState, setAddNewState] = useState(false)
-  // const [firstRowId, setFirstRowId] = useState('')
 
   const [successMsg, setSuccessMsg] = useState()
   const [errMsg, setErrMsg] = useState()
@@ -46,19 +45,19 @@ function App() {
   
   // const search_params = Object.keys(Object.assign({}, ...data))
 
-  const search = (data) => {
-    const newData = data.filter(
-      (item) =>
-        search_params.some((param) =>
-          item[param].toString().toLowerCase().includes(query)
-        )
-    )
-    return newData
-  }
+  // const search = (data) => {
+  //   const newData = data.filter(
+  //     (item) =>
+  //       search_params.some((param) =>
+  //         item[param].toString().toLowerCase().includes(query)
+  //       )
+  //   )
+  //   return newData
+  // }
 
-  const resetSearch = () => {
-    setQuery('')
-  }
+  // const resetSearch = () => {
+  //   setQuery('')
+  // }
 
   const onClickAdd = () => {
     setAddNewState(true)
@@ -102,11 +101,10 @@ function App() {
                   loading={loading} 
                   products={products} 
                   setProducts={setProducts} 
-                  search={search} 
                   addNewState={addNewState} 
                   setAddNewState={setAddNewState} 
+                  query={query}
                   setQuery={setQuery} 
-                  resetSearch={resetSearch} 
                   onClickAdd={onClickAdd} 
                   authenticated={authenticated} 
                   setAuthenticated={setAuthenticated} 

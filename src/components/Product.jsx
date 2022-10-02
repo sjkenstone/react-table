@@ -239,7 +239,7 @@ const Product = ({
           sx={(isEditing || isDelete || addNewState) ? { color: '#adb5bd' } : { color: 'black'} }
           style={{ height: 133 }}
         >
-          {price}
+          ${price}
         </TableCell>
       </TableRow>
     )

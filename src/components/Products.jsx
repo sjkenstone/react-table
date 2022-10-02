@@ -19,7 +19,7 @@ import SnackBar from './SnackBar'
 import { apiDeleteService, apiPutService } from '../services'
 
 
-const Products = ({ fetchData, error, getErrorView, loading, search, products, setProducts, addNewState, setAddNewState, setQuery, resetSearch, onClickAdd, snackState, setSnackState, authenticated, setAuthenticated, successMsg, setSuccessMsg, errMsg, setErrMsg, csvFile, setCsvFile  }) => {
+const Products = ({ fetchData, error, getErrorView, loading, products, setProducts, addNewState, setAddNewState, setQuery, onClickAdd, snackState, setSnackState, authenticated, setAuthenticated, successMsg, setSuccessMsg, errMsg, setErrMsg, csvFile, setCsvFile, query  }) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
@@ -30,6 +30,10 @@ const Products = ({ fetchData, error, getErrorView, loading, search, products, s
   //state for edit row inputs
   const [editRow, setEditRow] = useState({})
   const [deleteRow, setDeleteRow] = useState({})
+
+  const [count, setCount] = useState(0)
+
+  const search_params = ['title', 'price']
 
 
   const [image, setImage] = useState()
@@ -237,11 +241,29 @@ const Products = ({ fetchData, error, getErrorView, loading, search, products, s
         }
   }
 
+  const search = (data) => {
+    const newData = data.filter(
+      (item) =>
+        search_params.some((param) =>
+          item[param].toString().toLowerCase().includes(query)
+        )
+    )
+    return newData
+  }
+
+  const resetSearch = () => {
+    setQuery('')
+  }
+
   const searchResLength = search(products).length
+
   useEffect(() => {
-    // if (searchResLength <= rowsPerPage && page > 0) {
-    setPage(0)
-    // }
+   const timer = setTimeout(() => {
+      setCount(searchResLength)
+      setPage(0)
+    }, 100);
+    
+    return () => clearTimeout(timer)
   }, [searchResLength])
   
   const handleChangePage = (_event, newPage) => {
@@ -254,14 +276,9 @@ const Products = ({ fetchData, error, getErrorView, loading, search, products, s
   }
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage)
+    rowsPerPage - Math.min(rowsPerPage, search(products).length - page * rowsPerPage)
 
-  //if no row data in table, then switch to 0 page  
-  // useEffect(() => {
-  //   if (emptyRows === 5) {
-  //     setPage(0)
-  //   }
-  // }, [emptyRows])
+
 
   const handleLogout = () => {
     localStorage.clear()
@@ -344,7 +361,7 @@ const Products = ({ fetchData, error, getErrorView, loading, search, products, s
                     addNewState={addNewState}
                     image={image}
                   />)}
-                {emptyRows > 0 && (
+                {(emptyRows > 0 && products.length > rowsPerPage) && (
                   <TableRow style={{ height: 133 * emptyRows }}>
                     <TableCell colSpan={5} />
                   </TableRow>
@@ -354,7 +371,8 @@ const Products = ({ fetchData, error, getErrorView, loading, search, products, s
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component='div'
-              count={search(products).length}
+              count={count}
+              // count={searchResLength}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
