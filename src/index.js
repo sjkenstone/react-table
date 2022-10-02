@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
+import './index.css';
+// import Login from './components/Login'
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from '@emotion/react';
+import { theme } from './Theme'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>    
+      {/* <Router>
+         <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/product' element={<App />} />
+        </Routes>
+      </Router> */}
+      <App />
+    </ThemeProvider>    
   </React.StrictMode>
 );
 

@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiTablePagination-displayedRows,
+.MuiTablePagination-selectLabel {
+  margin-bottom: 0px !important;
+}
